@@ -37,7 +37,7 @@ variable "location" {
 }
 
 variable "keyvaultname" {
-  default = "visionet-kv"
+  default = "test-kv"
 }
 
 variable "sku" {
