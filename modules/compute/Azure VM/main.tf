@@ -1,38 +1,19 @@
 #terraform script to create VM
-resource "azurerm_resource_group" "main" {
-  name     = var.rgname
-  location = var.location
-}
-
-resource "azurerm_virtual_network" "main" {
-  name                = "${var.vmname}-network"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
-}
-
-resource "azurerm_subnet" "internal" {
-  name                 = "internal"
-  resource_group_name  = azurerm_resource_group.main.name
-  virtual_network_name = azurerm_virtual_network.main.name
-  address_prefixes     = ["10.0.2.0/24"]
-}
-
 resource "azurerm_public_ip" "main" {
   name                = "${var.vmname}-ip"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = var.location
+  resource_group_name = var.rgname
   allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "main" {
   name                = "${var.vmname}-nic"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = var.location
+  resource_group_name = var.rgname
 
   ip_configuration {
     name                          = "ipconfig"
-    subnet_id                     = azurerm_subnet.internal.id
+    subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.main.id
 
@@ -41,8 +22,8 @@ resource "azurerm_network_interface" "main" {
 }
 resource "azurerm_virtual_machine" "main" {
   name                             = "${var.vmname}-vm"
-  location                         = azurerm_resource_group.main.location
-  resource_group_name              = azurerm_resource_group.main.name
+  location                         = var.location
+  resource_group_name              = var.rgname
   network_interface_ids            = [azurerm_network_interface.main.id]
   vm_size                          = var.vmsize
   delete_os_disk_on_termination    = true #to preserve os-disk after deletion, set this poperty to false
@@ -50,9 +31,9 @@ resource "azurerm_virtual_machine" "main" {
 
   #Windows or marketplace images can be used as per the requirements
   storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    publisher = var.publisher
+    offer     = var.offer
+    sku       = var.sku
     version   = "latest"
   }
 
@@ -72,5 +53,7 @@ resource "azurerm_virtual_machine" "main" {
   }
   tags = {
     environment = var.environment
+    owner = var.owner
+    createdon = var.creationdate
   }
 }
