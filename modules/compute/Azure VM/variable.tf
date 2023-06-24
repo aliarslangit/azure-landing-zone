@@ -1,26 +1,3 @@
-//------------------------------------Service Principal------------------------------------\\
-variable "azure_subscription_id" {
-  type    = string
-  default = ""
-}
-
-variable "azure_client_id" {
-  type    = string
-  default = ""
-
-}
-
-variable "azure_client_secret" {
-  type    = string
-  default = ""
-
-}
-
-variable "azure_tenant_id" {
-  type    = string
-  default = ""
-
-}
 
 //------------------------------------General Properties------------------------------------\\
 variable "rgname" {
@@ -50,7 +27,27 @@ variable "vmsize" {
   default = "Standard_F2"
 }
 
-//------------------------------------TAGS------------------------------------\\
+variable "subnet_id" {
+  type = string
+  default = "0000000-000000000000-0000000000"
+
+}
+//------------------------------------OS Configurations-------------------------------------\\
+variable "publisher" {
+  type    = string
+  default = "Canonical"
+}
+variable "offer" {
+  type    = string
+  default = "UbuntuServer"
+}
+variable "sku" {
+  type    = string
+  default = "16.04-LTS"
+}
+
+
+//------------------------------------TAGS---------------------------------------------------\\
 variable "creationdate" {
   type        = string
   default     = "1/1/1111"
@@ -60,4 +57,9 @@ variable "creationdate" {
 variable "environment" {
   type    = string
   default = "Dev"
+}
+
+variable "owner" {
+  type = string
+  default = "Ali Arslan"
 }
