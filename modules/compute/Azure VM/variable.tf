@@ -2,7 +2,7 @@
 //------------------------------------General Properties------------------------------------\\
 variable "rgname" {
   type    = string
-  default = "RG-git-DEMO-LINUXVM"
+  default = "RG-git"
 }
 variable "vmname" {
   type    = string
