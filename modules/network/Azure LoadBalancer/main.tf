@@ -1,14 +1,8 @@
-resource "azurerm_resource_group" "main" {
-  name     = var.lbname
-  location = var.location
-
-}
-
 resource "azurerm_public_ip" "main" {
   name                = "PublicIPForLB"
   location            = var.location
   sku                 = "Standard"
-  resource_group_name = azurerm_resource_group.main.name
+  resource_group_name = var.rgname
   allocation_method   = "Static"
   tags = {
     Environment = var.Environment,
@@ -18,7 +12,7 @@ resource "azurerm_public_ip" "main" {
 resource "azurerm_lb" "main" {
   name                = var.lbname
   location            = var.location
-  resource_group_name = azurerm_resource_group.main.name
+  resource_group_name = var.rgname
   sku                 = "Standard"
   frontend_ip_configuration {
     name                 = "PublicIPAddress"
@@ -37,7 +31,7 @@ resource "azurerm_lb_backend_address_pool" "main" {
 }
 resource "azurerm_lb_rule" "main" {
   count                          = length(var.lbrules)
-  resource_group_name            = azurerm_resource_group.main.name
+  resource_group_name            = var.rgname
   loadbalancer_id                = azurerm_lb.main.id
   name                           = "LBRule-${count.index}"
   protocol                       = "Tcp"
