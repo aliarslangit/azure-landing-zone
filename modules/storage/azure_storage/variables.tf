@@ -1,7 +1,7 @@
 //------------------------------------General Properties------------------------------------\\
 variable "rgname" {
   type    = string
-  default = "RG-git-DEMO-LINUXVM"
+  default = "Rg-git"
 }
 
 variable "location" {
@@ -10,7 +10,7 @@ variable "location" {
 }
 variable "storagename" {
   type    = string
-  default = "RG-git-DEMO-LINUXVM"
+  default = "Rg-git"
 }
 
 variable "accounttype" {
